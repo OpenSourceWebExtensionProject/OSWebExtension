@@ -1,4 +1,5 @@
 
+// <<<<<<< todolist_v1.1
 //initialise variables
 var todoList = [];
 var noteList = [];
@@ -55,4 +56,5 @@ function initialiseValues() {
 
 function removeValues(){
 	localStorage.clear();
+
 }

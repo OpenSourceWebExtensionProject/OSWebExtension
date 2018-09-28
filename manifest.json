@@ -27,6 +27,7 @@
 		"default_popup": "ToDoList.html",
 		"default_title": "To-Do-List"
 	},
+ 
 
   "background": {
     "scripts": ["extra.js"]
