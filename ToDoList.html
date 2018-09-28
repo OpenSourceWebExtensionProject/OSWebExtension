@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Todo App</title>
+    <!-- <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'> -->
+<!--    <link rel="manifest" href="manifest.json">-->
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">    
+         
+  </head>
+  <body>
+      
+<!--    <div class="container">-->
+
+<section class="todo">
+    
+    <label for="new-task"> Add Item 
+    <select id="choiceDropDown">
+      <option value="todolist">To-Do-List</option>
+      <option value="note">Note</option>
+    </select>
+        
+    </label>
+ 
+    <form class="todo-form" action="" method="post"> 
+
+        <!-- <input id="task" class="task" type="text" name="task" size="40" autocomplete="off" tabindex="-1"> -->
+        <textarea class="task" id="task" rows="4" cols="50"></textarea>
+        
+        <input type="submit" id="addBtn" class="task-submit icon-add" value="Add" tabindex="-1">
+    
+    <label for="new-task"> To-Do-Item </label>
+    <div id="todo-section" class="todo-list">
+        <ul id="todo-items"></ul> 
+    </div>
+        
+    <label for="new-task"> Notes </label> 
+    <div id="note-section">
+        <ul id="note-items"></ul>
+    </div>
+       </form>
+    
+ </section>
+      
+<!--    </div>-->
+    <!-- <script type="text/javascript" src="js/todolist.js"></script> -->
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/jquery.jeditable.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/extra.js"></script>
+
+  </body>
+</html>
