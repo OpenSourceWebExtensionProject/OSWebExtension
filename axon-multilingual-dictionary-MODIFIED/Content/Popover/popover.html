@@ -1,0 +1,892 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <!-- Switchery and Powerange by Alexander Petkov http://abpetkov.github.io/ -->
+        <link rel="stylesheet" href="../ExtLib/switchery.css" />
+        <link rel="stylesheet" href="../ExtLib/powerange.css" />
+        <script src="../ExtLib/switchery.js"></script>
+        <script src="../ExtLib/powerange.js"></script>
+
+        <script src="../Config.js"></script>
+        <script src="../Lib/DomHelper.js"></script>
+        <script src="../Lib/ParserFilter.js"></script>
+        <script src="../Lib/DataObjects/DictionaryData.js"></script>
+        <script src="../Lib/WikiFilter.js"></script>
+        <script src="../Lib/StringHelper.js"></script>
+        <script src="../Lib/Request.js"></script>
+        <script src="../Lib/Template/Template.js"></script>
+
+        <script src="popover.js"></script>
+        <link rel="stylesheet" href="popover.css" />
+    </head>
+
+<body>
+
+<div id="wordOfDay">
+    <div id="title" class="page-choice">Loading...</div>
+    <div id="meaning" class="page-choice">&nbsp;</div>
+    <div id="footer" class="page-choice">
+        <input type="button" class="button" value="View on the web" />
+        <!-- <input type="button" class="button link-button" value="Visit Addon Page" /> -->
+    </div>
+</div>
+
+<div id="mainMenu">
+
+    <table class="popoverTable">
+<!--     <tr>
+        <td class="bordersTop separator relative" style="padding:8px 10px"><span style="position:relative;top:2px;">Axon on / off</span><input id="axonDisabled" type="checkbox" class="js-switch"/></td>
+    </tr>
+    <tr>
+         <td class="separator clickToOpenSettings relative" style="height:26px"><span>Settings</span><div class="greaterThan">&gt;</div></td>
+    </tr> -->
+    <tr>
+        <td class="bordersBottom separator relative userSelectNone">
+            <input id="search" type="text" placeholder="Type a word or phrase to search" style="padding:0;height:26px;">
+            <div id="languageSwitch">
+                <div id="lang1"></div>
+                <div id="lang2"></div>
+            </div>
+        </td>
+    </tr>
+
+    </table>
+
+    <div id="resultBox" class="overflowYScroll userSelectNone">
+
+        <table class="popoverTable">
+
+            <tr class="searchResultHeader wordnik"><td class="blockTitle searchResultHeader wordnik">WORDNIK</td></tr>
+
+            <tr class="searchResult wordnik">
+                <td class="bordersTop bordersBottom relative">
+                    <div id="resultWordnik"></div>
+                    <div id="annotation-attribution-wordnik"><a target="_blank"></a><div>
+                    <div id="annotation-more-wordnik"><a target="_blank">More</a></div>
+                </td>
+            </tr>
+
+            <tr class="searchResultHeader wiktionary"><td class="blockTitle searchResultHeader wiktionary">WIKTIONARY</td></tr>
+
+            <tr class="searchResult wiktionary">
+                <td class="bordersTop bordersBottom relative">
+                    <div id="resultWiktionary"></div>
+                    <div id="annotation-attribution-wiktionary"><a target="_blank"></a><div>
+                    <div id="annotation-more-wiktionary"><a target="_blank">more</a></div>
+                </td>
+            </tr>
+
+            <tr class="searchResultHeader wikipedia"><td class="blockTitle searchResultHeader wikipedia">WIKIPEDIA</td></tr>
+
+            <tr class="searchResult wikipedia">
+                <td class="bordersTop bordersBottom relative">
+                    <div id="resultWikipedia"></div>
+                    <div id="annotation-attribution-wikipedia" class="displaynone"><a target="_blank"></a><div>
+                    <div id="annotation-more-wikipedia"><a target="_blank">more</a></div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+
+<div id="settingsMenu" class="animateWidth">
+
+    <div class="header">
+        <span id="back">
+            <span class="lessThan">&lt;</span>
+            <span class="mainMenu">Main menu</span>
+        </span>
+        <div class="title">Axon settings</div>
+    </div>
+
+    <hr>
+
+    <table class="axonConfiguration">
+    <tbody>
+
+        <tr><td colspan="2" class="blockTitle">MAIN CONTROLS</td></tr>
+
+        <tr>
+            <td class="topLeft"><label>Activate Axon when I</label></td>
+            <td class="topRight"><input name="activateAxonWhenI" value="dblclick" type="radio">&nbsp;Double-click a word</td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td class="optionSeparator"><input name="activateAxonWhenI" value="mouseup" type="radio">&nbsp;Double-click a word or select text</td>
+        </tr>
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+        <tr>
+            <td class="top"><label>while holding down</label></td>
+            <td class="top"><input name="activateAxonWhileHoldingDown" value="ctrl" type="radio">&nbsp;Ctrl</td>
+        </tr>
+
+        <tr><td></td><td class="optionSeparator"><input name="activateAxonWhileHoldingDown" value="alt" type="radio">&nbsp;Alt</td></tr>
+        <tr><td></td><td class="optionSeparator"><input name="activateAxonWhileHoldingDown" value="shift" type="radio">&nbsp;Shift</td></tr>
+        <tr><td></td><td class="optionSeparator"><input name="activateAxonWhileHoldingDown" value="cmd" type="radio">&nbsp;Cmd (macOS)</td></tr>
+        <tr><td class="bottomLeft"></td><td class="bottomRight optionSeparator"><input name="activateAxonWhileHoldingDown" value="disable" type="radio">&nbsp;Disable hotkey</td></tr>
+
+        <tr><td colspan="2" class="blockSeparator"></td></tr> 
+
+        <tr><td colspan="2" class="blockTitle">LANGUAGE AND DICTIONARIES</td></tr>
+
+        <tr class="oneRow"><td class="topLeft"><label>Main language</label></td>
+        <td class="topRight">
+            <!-- Source: https://en.wikipedia.org/wiki/List_of_Wikipedias -->
+            <select name="mainLanguageCode" id="mainLanguageCode">
+                <option value="en">en - English - English</option>
+                <option value="sv">sv - Swedish - Svenska</option>
+                <option value="nl">nl - Dutch - Nederlands</option>
+                <option value="de">de - German - Deutsch</option>
+                <option value="fr">fr - French - Français</option>
+                <option value="war">war - Waray-Waray - Winaray</option>
+                <option value="ceb">ceb - Cebuano - Sinugboanong Binisaya</option>
+                <option value="ru">ru - Russian - Русский</option>
+                <option value="it">it - Italian - Italiano</option>
+                <option value="es">es - Spanish - Español</option>
+                <option value="vi">vi - Vietnamese - Tiếng Việt</option>
+                <option value="pl">pl - Polish - Polski</option>
+                <option value="ja">ja - Japanese - 日本語</option>
+                <option value="pt">pt - Portuguese - Português</option>
+                <option value="zh">zh - Chinese - 中文</option>
+                <option value="uk">uk - Ukrainian - Українська</option>
+                <option value="ca">ca - Catalan - Català</option>
+                <option value="fa">fa - Persian - فارسی</option>
+                <option value="no">no - Norwegian (Bokmål) - Norsk (Bokmål)</option>
+                <option value="fi">fi - Finnish - Suomi</option>
+                <option value="id">id - Indonesian - Bahasa Indonesia</option>
+                <option value="ar">ar - Arabic - العربية</option>
+                <option value="sr">sr - Serbian - Српски / Srpski</option>
+                <option value="cs">cs - Czech - Čeština</option>
+                <option value="ko">ko - Korean - 한국어</option>
+                <option value="hu">hu - Hungarian - Magyar</option>
+                <option value="sh">sh - Serbo-Croatian - Srpskohrvatski / Српскохрватски</option>
+                <option value="ms">ms - Malay - Bahasa Melayu</option>
+                <option value="ro">ro - Romanian - Română</option>
+                <option value="tr">tr - Turkish - Türkçe</option>
+                <option value="min">min - Minangkabau - Minangkabau</option>
+                <option value="kk">kk - Kazakh - Қазақша</option>
+                <option value="eo">eo - Esperanto - Esperanto</option>
+                <option value="eu">eu - Basque - Euskara</option>
+                <option value="sk">sk - Slovak - Slovenčina</option>
+                <option value="da">da - Danish - Dansk</option>
+                <option value="bg">bg - Bulgarian - Български</option>
+                <option value="lt">lt - Lithuanian - Lietuvių</option>
+                <option value="he">he - Hebrew - עברית</option>
+                <option value="hr">hr - Croatian - Hrvatski</option>
+                <option value="hy">hy - Armenian - Հայերեն</option>
+                <option value="sl">sl - Slovenian - Slovenščina</option>
+                <option value="et">et - Estonian - Eesti</option>
+                <option value="uz">uz - Uzbek - O‘zbek</option>
+                <option value="gl">gl - Galician - Galego</option>
+                <option value="vo">vo - Volapük - Volapük</option>
+                <option value="nn">nn - Norwegian (Nynorsk) - Nynorsk</option>
+                <option value="hi">hi - Hindi - हिन्दी</option>
+                <option value="el">el - Greek - Ελληνικά</option>
+                <option value="la">la - Latin - Latina</option>
+                <option value="az">az - Azerbaijani - Azərbaycanca</option>
+                <option value="th">th - Thai - ไทย</option>
+                <option value="ka">ka - Georgian - ქართული</option>
+                <option value="oc">oc - Occitan - Occitan</option>
+                <option value="mk">mk - Macedonian - Македонски</option>
+                <option value="be">be - Belarusian - Беларуская</option>
+                <option value="ce">ce - Chechen - Нохчийн</option>
+                <option value="mg">mg - Malagasy - Malagasy</option>
+                <option value="new">new - Newar / Nepal Bhasa - नेपाल भाषा</option>
+                <option value="ta">ta - Tamil - தமிழ்</option>
+                <option value="tt">tt - Tatar - Tatarça / Татарча</option>
+                <option value="ur">ur - Urdu - اردو</option>
+                <option value="pms">pms - Piedmontese - Piemontèis</option>
+                <option value="tl">tl - Tagalog - Tagalog</option>
+                <option value="cy">cy - Welsh - Cymraeg</option>
+                <option value="te">te - Telugu - తెలుగు</option>
+                <option value="lv">lv - Latvian - Latviešu</option>
+                <option value="bs">bs - Bosnian - Bosanski</option>
+                <option value="e-x-old ">Belarold  - usian (Taraškievica) - Беларуская (тарашкевіца)</option>
+                <option value="ht">ht - Haitian - Krèyol ayisyen</option>
+                <option value="br">br - Breton - Brezhoneg</option>
+                <option value="sq">sq - Albanian - Shqip</option>
+                <option value="jv">jv - Javanese - Basa Jawa</option>
+                <option value="lb">lb - Luxembourgish - Lëtzebuergesch</option>
+                <option value="mr">mr - Marathi - मराठी</option>
+                <option value="is">is - Icelandic - Íslenska</option>
+                <option value="ml">ml - Malayalam - മലയാളം</option>
+                <option value="h-yue ">Canyue  - tonese - 粵語</option>
+                <option value="af">af - Afrikaans - Afrikaans</option>
+                <option value="bn">bn - Bengali - বাংলা</option>
+                <option value="ba">ba - Bashkir - Башҡорт</option>
+                <option value="pnb">pnb - Western Panjabi - شاہ مکھی پنجابی (Shāhmukhī Pañjābī)</option>
+                <option value="ga">ga - Irish - Gaeilge</option>
+                <option value="my">my - Burmese - မြန်မာဘာသာ</option>
+                <option value="lmo">lmo - Lombard - Lumbaart</option>
+                <option value="fy">fy - West Frisian - Frysk</option>
+                <option value="yo">yo - Yoruba - Yorùbá</option>
+                <option value="tg">tg - Tajik - Тоҷикӣ</option>
+                <option value="an">an - Aragonese - Aragonés</option>
+                <option value="cv">cv - Chuvash - Чăваш</option>
+                <option value="sco">sco - Scots - Scots</option>
+                <option value="sw">sw - Swahili - Kiswahili</option>
+                <option value="ky">ky - Kirghiz - Кыргызча</option>
+                <option value="ne">ne - Nepali - नेपाली</option>
+                <option value="io">io - Ido - Ido</option>
+                <option value="gu">gu - Gujarati - ગુજરાતી</option>
+                <option value="bpy">bpy - Bishnupriya Manipuri - ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী</option>
+                <option value="scn">scn - Sicilian - Sicilianu</option>
+                <option value="nds">nds - Low Saxon - Plattdüütsch</option>
+                <option value="ku">ku - Kurdish - Kurdî / كوردی</option>
+                <option value="ast">ast - Asturian - Asturianu</option>
+                <option value="qu">qu - Quechua - Runa Simi</option>
+                <option value="gd">gd - Scottish Gaelic - Gàidhlig</option>
+                <option value="als">als - Alemannic - Alemannisch</option>
+                <option value="su">su - Sundanese - Basa Sunda</option>
+                <option value="kn">kn - Kannada - ಕನ್ನಡ</option>
+                <option value="pa">pa - Punjabi - ਪੰਜਾਬੀ</option>
+                <option value="am">am - Amharic - አማርኛ</option>
+                <option value="ckb">ckb - Sorani - Soranî / کوردی</option>
+                <option value="ia">ia - Interlingua - Interlingua</option>
+                <option value="nap">nap - Neapolitan - Nnapulitano</option>
+                <option value="bug">bug - Buginese - Basa Ugi</option>
+                <option value="mn">mn - Mongolian - Монгол</option>
+                <option value="at-smg ">Samosmg  - gitian - Žemaitėška</option>
+                <option value="wa">wa - Walloon - Walon</option>
+                <option value="arz">arz - Egyptian Arabic - مصرى (Maṣri)</option>
+                <option value="ap-bms ">Banybms  - umasan - Basa Banyumasan</option>
+                <option value="h-min-nan ">Min Nannan  -  - Bân-lâm-gú</option>
+                <option value="si">si - Sinhalese - සිංහල</option>
+                <option value="mzn">mzn - Mazandarani - مَزِروني</option>
+                <option value="yi">yi - Yiddish - ייִדיש</option>
+                <option value="fo">fo - Faroese - Føroyskt</option>
+                <option value="sah">sah - Sakha - Саха тыла (Saxa Tyla)</option>
+                <option value="sa">sa - Sanskrit - संस्कृतम्</option>
+                <option value="bar">bar - Bavarian - Boarisch</option>
+                <option value="vec">vec - Venetian - Vèneto</option>
+                <option value="nah">nah - Nahuatl - Nāhuatl</option>
+                <option value="os">os - Ossetian - Иронау</option>
+                <option value="oa-tara ">Taratara  - ntino - Tarandíne</option>
+                <option value="hsb">hsb - Upper Sorbian - Hornjoserbsce</option>
+                <option value="li">li - Limburgish - Limburgs</option>
+                <option value="or">or - Oriya - ଓଡ଼ିଆ</option>
+                <option value="pam">pam - Kapampangan - Kapampangan</option>
+                <option value="se">se - Northern Sami - Sámegiella</option>
+                <option value="ilo">ilo - Ilokano - Ilokano</option>
+                <option value="mrj">mrj - Hill Mari - Кырык Мары (Kyryk Mary)</option>
+                <option value="mi">mi - Maori - Māori</option>
+                <option value="co">co - Corsican - Corsu</option>
+                <option value="mhr">mhr - Meadow Mari - Олык Марий (Olyk Marij)</option>
+                <option value="hif">hif - Fiji Hindi - Fiji Hindi</option>
+                <option value="bcl">bcl - Central Bicolano - Bikol</option>
+                <option value="gan">gan - Gan - 贛語</option>
+                <option value="frr">frr - North Frisian - Nordfriisk</option>
+                <option value="bh">bh - Bihari - भोजपुरी</option>
+                <option value="bo">bo - Tibetan - བོད་སྐད</option>
+                <option value="rue">rue - Rusyn - Русиньскый</option>
+                <option value="glk">glk - Gilaki - گیلکی</option>
+                <option value="ds-nl ">Dutcnl  - h Low Saxon - Nedersaksisch</option>
+                <option value="iu-vro ">Võrovro  -  - Võro</option>
+                <option value="vls">vls - West Flemish - West-Vlams</option>
+                <option value="ps">ps - Pashto - پښتو</option>
+                <option value="tk">tk - Turkmen - تركمن / Туркмен</option>
+                <option value="pag">pag - Pangasinan - Pangasinan</option>
+                <option value="diq">diq - Zazaki - Zazaki</option>
+                <option value="xmf">xmf - Mingrelian - მარგალური (Margaluri)</option>
+                <option value="gv">gv - Manx - Gaelg</option>
+                <option value="sc">sc - Sardinian - Sardu</option>
+                <option value="km">km - Khmer - ភាសាខ្មែរ</option>
+                <option value="hak">hak - Hakka - Hak-kâ-fa / 客家話</option>
+                <option value="csb">csb - Kashubian - Kaszëbsczi</option>
+                <option value="kv">kv - Komi - Коми</option>
+                <option value="zea">zea - Zeelandic - Zeêuws</option>
+                <option value="crh">crh - Crimean Tatar - Qırımtatarca</option>
+                <option value="vep">vep - Vepsian - Vepsän</option>
+                <option value="h-classical ">Claclassical  - ssical Chinese - 古文 / 文言文</option>
+                <option value="ay">ay - Aymara - Aymar</option>
+                <option value="so">so - Somali - Soomaali</option>
+                <option value="dv">dv - Divehi - ދިވެހިބަސް</option>
+                <option value="udm">udm - Udmurt - Удмурт кыл</option>
+                <option value="kw">kw - Cornish - Kernewek/Karnuack</option>
+                <option value="nrm">nrm - Norman - Nouormand/Normaund</option>
+                <option value="rm">rm - Romansh - Rumantsch</option>
+                <option value="wuu">wuu - Wu - 吴语</option>
+                <option value="eml">eml - Emilian-Romagnol - Emiliàn e rumagnòl</option>
+                <option value="koi">koi - Komi-Permyak - Перем Коми (Perem Komi)</option>
+                <option value="ug">ug - Uyghur - ئۇيغۇر تىلى</option>
+                <option value="stq">stq - Saterland Frisian - Seeltersk</option>
+                <option value="lad">lad - Ladino - Dzhudezmo</option>
+                <option value="lij">lij - Ligurian - Líguru</option>
+                <option value="fur">fur - Friulian - Furlan</option>
+                <option value="szl">szl - Silesian - Ślůnski</option>
+                <option value="mt">mt - Maltese - Malti</option>
+                <option value="as">as - Assamese - অসমীয়া</option>
+                <option value="bk-zam ">Zambzam  - oanga Chavacano - Chavacano de Zamboanga</option>
+                <option value="gn">gn - Guarani - Avañe'ẽ</option>
+                <option value="pcd">pcd - Picard - Picard</option>
+                <option value="pi">pi - Pali - पाऴि</option>
+                <option value="gag">gag - Gagauz - Gagauz</option>
+                <option value="ksh">ksh - Ripuarian - Ripoarisch</option>
+                <option value="ie">ie - Interlingue - Interlingue</option>
+                <option value="ang">ang - Anglo-Saxon - Englisc</option>
+                <option value="dsb">dsb - Lower Sorbian - Dolnoserbski</option>
+                <option value="ace">ace - Acehnese - Bahsa Acèh</option>
+                <option value="ext">ext - Extremaduran - Estremeñu</option>
+                <option value="nv">nv - Navajo - Diné bizaad</option>
+                <option value="frp">frp - Franco-Provençal/Arpitan - Arpitan</option>
+                <option value="kab">kab - Kabyle - Taqbaylit</option>
+                <option value="sn">sn - Shona - chiShona</option>
+                <option value="mwl">mwl - Mirandese - Mirandés</option>
+                <option value="lez">lez - Lezgian - Лезги чІал (Lezgi č’al)</option>
+                <option value="ln">ln - Lingala - Lingala</option>
+                <option value="cdo">cdo - Min Dong - Mìng-dĕ̤ng-ngṳ̄</option>
+                <option value="pfl">pfl - Palatinate German - Pälzisch</option>
+                <option value="krc">krc - Karachay-Balkar - Къарачай-Малкъар (Qarachay-Malqar)</option>
+                <option value="haw">haw - Hawaiian - Hawai`i</option>
+                <option value="pdc">pdc - Pennsylvania German - Deitsch</option>
+                <option value="xal">xal - Kalmyk - Хальмг</option>
+                <option value="myv">myv - Erzya - Эрзянь (Erzjanj Kelj)</option>
+                <option value="rw">rw - Kinyarwanda - Ikinyarwanda</option>
+                <option value="nov">nov - Novial - Novial</option>
+                <option value="kaa">kaa - Karakalpak - Qaraqalpaqsha</option>
+                <option value="to">to - Tongan - faka Tonga</option>
+                <option value="kl">kl - Greenlandic - Kalaallisut</option>
+                <option value="arc">arc - Aramaic - ܐܪܡܝܐ</option>
+                <option value="bjn">bjn - Banjar - Bahasa Banjar</option>
+                <option value="lo">lo - Lao - ລາວ</option>
+                <option value="kbd">kbd - Kabardian Circassian - Адыгэбзэ (Adighabze)</option>
+                <option value="ha">ha - Hausa - هَوُسَ</option>
+                <option value="pap">pap - Papiamentu - Papiamentu</option>
+                <option value="av">av - Avar - Авар</option>
+                <option value="ty">ty - Tahitian - Reo Mā`ohi</option>
+                <option value="tpi">tpi - Tok Pisin - Tok Pisin</option>
+                <option value="bxr">bxr - Buryat (Russia) - Буряад</option>
+                <option value="na">na - Nauruan - dorerin Naoero</option>
+                <option value="mdf">mdf - Moksha - Мокшень (Mokshanj Kälj)</option>
+                <option value="lbe">lbe - Lak - Лакку</option>
+                <option value="jbo">jbo - Lojban - Lojban</option>
+                <option value="wo">wo - Wolof - Wolof</option>
+                <option value="oa-rup ">Aromrup  - anian - Armãneashce</option>
+                <option value="srn">srn - Sranan - Sranantongo</option>
+                <option value="ig">ig - Igbo - Igbo</option>
+                <option value="tet">tet - Tetum - Tetun</option>
+                <option value="nso">nso - Northern Sotho - Sepedi</option>
+                <option value="tyv">tyv - Tuvan - Тыва</option>
+                <option value="kg">kg - Kongo - KiKongo</option>
+                <option value="ab">ab - Abkhazian - Аҧсуа</option>
+                <option value="sd">sd - Sindhi - سنڌي، سندھی ، सिन्ध</option>
+                <option value="ltg">ltg - Latgalian - Latgaļu</option>
+                <option value="zu">zu - Zulu - isiZulu</option>
+                <option value="za">za - Zhuang - Cuengh</option>
+                <option value="om">om - Oromo - Oromoo</option>
+                <option value="tw">tw - Twi - Twi</option>
+                <option value="chy">chy - Cheyenne - Tsetsêhestâhese</option>
+                <option value="mai">mai - Maithili - मैथिली</option>
+                <option value="rmy">rmy - Romani - romani - रोमानी</option>
+                <option value="cu">cu - Old Church Slavonic - Словѣньскъ</option>
+                <option value="chr">chr - Cherokee - ᏣᎳᎩ</option>
+                <option value="tn">tn - Tswana - Setswana</option>
+                <option value="got">got - Gothic - 𐌲𐌿𐍄𐌹𐍃𐌺</option>
+                <option value="bi">bi - Bislama - Bislama</option>
+                <option value="pih">pih - Norfolk - Norfuk</option>
+                <option value="rn">rn - Kirundi - Kirundi</option>
+                <option value="sm">sm - Samoan - Gagana Samoa</option>
+                <option value="bm">bm - Bambara - Bamanankan</option>
+                <option value="ss">ss - Swati - SiSwati</option>
+                <option value="mo">mo - Moldovan - Молдовеняскэ</option>
+                <option value="iu">iu - Inuktitut - ᐃᓄᒃᑎᑐᑦ</option>
+                <option value="xh">xh - Xhosa - isiXhosa</option>
+                <option value="ki">ki - Kikuyu - Gĩkũyũ</option>
+                <option value="pnt">pnt - Pontic - Ποντιακά</option>
+                <option value="lg">lg - Luganda - Luganda</option>
+                <option value="ts">ts - Tsonga - Xitsonga</option>
+                <option value="ee">ee - Ewe - Eʋegbe</option>
+                <option value="ak">ak - Akan - Akana</option>
+                <option value="ti">ti - Tigrinya - ትግርኛ</option>
+                <option value="fj">fj - Fijian - Na Vosa Vakaviti</option>
+                <option value="ks">ks - Kashmiri - कश्मीरी / كشميري</option>
+                <option value="sg">sg - Sango - Sängö</option>
+                <option value="ff">ff - Fula - Fulfulde</option>
+                <option value="ny">ny - Chichewa - Chichewa</option>
+                <option value="ve">ve - Venda - Tshivenda</option>
+                <option value="st">st - Sesotho - Sesotho</option>
+                <option value="ch">ch - Chamorro - Chamoru</option>
+                <option value="cr">cr - Cree - Nehiyaw</option>
+                <option value="dz">dz - Dzongkha - ཇོང་ཁ</option>
+                <option value="ik">ik - Inupiak - Iñupiak</option>
+                <option value="tum">tum - Tumbuka - chiTumbuka</option>
+                <option value="ng">ng - Ndonga - Oshiwambo</option>
+                <option value="ii">ii - Sichuan Yi - ꆇꉙ</option>
+                <option value="cho">cho - Choctaw - Choctaw</option>
+                <option value="mh">mh - Marshallese - Ebon</option>
+                <option value="aa">aa - Afar - Afar</option>
+                <option value="kj">kj - Kuanyama - Kuanyama</option>
+                <option value="ho">ho - Hiri Motu - Hiri Motu</option>
+                <option value="mus">mus - Muscogee - Muskogee</option>
+                <option value="kr">kr - Kanuri - Kanuri</option>
+                <option value="hz">hz - Herero - Otsiherero</option>
+            </select>
+            </td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td><label>Second language</label></td>
+        <td>
+            <select name="secondLanguageCode" id="secondLanguageCode">
+                <option value="en">en - English - English</option>
+                <option value="sv">sv - Swedish - Svenska</option>
+                <option value="nl">nl - Dutch - Nederlands</option>
+                <option value="de">de - German - Deutsch</option>
+                <option value="fr">fr - French - Français</option>
+                <option value="war">war - Waray-Waray - Winaray</option>
+                <option value="ceb">ceb - Cebuano - Sinugboanong Binisaya</option>
+                <option value="ru">ru - Russian - Русский</option>
+                <option value="it">it - Italian - Italiano</option>
+                <option value="es">es - Spanish - Español</option>
+                <option value="vi">vi - Vietnamese - Tiếng Việt</option>
+                <option value="pl">pl - Polish - Polski</option>
+                <option value="ja">ja - Japanese - 日本語</option>
+                <option value="pt">pt - Portuguese - Português</option>
+                <option value="zh">zh - Chinese - 中文</option>
+                <option value="uk">uk - Ukrainian - Українська</option>
+                <option value="ca">ca - Catalan - Català</option>
+                <option value="fa">fa - Persian - فارسی</option>
+                <option value="no">no - Norwegian (Bokmål) - Norsk (Bokmål)</option>
+                <option value="fi">fi - Finnish - Suomi</option>
+                <option value="id">id - Indonesian - Bahasa Indonesia</option>
+                <option value="ar">ar - Arabic - العربية</option>
+                <option value="sr">sr - Serbian - Српски / Srpski</option>
+                <option value="cs">cs - Czech - Čeština</option>
+                <option value="ko">ko - Korean - 한국어</option>
+                <option value="hu">hu - Hungarian - Magyar</option>
+                <option value="sh">sh - Serbo-Croatian - Srpskohrvatski / Српскохрватски</option>
+                <option value="ms">ms - Malay - Bahasa Melayu</option>
+                <option value="ro">ro - Romanian - Română</option>
+                <option value="tr">tr - Turkish - Türkçe</option>
+                <option value="min">min - Minangkabau - Minangkabau</option>
+                <option value="kk">kk - Kazakh - Қазақша</option>
+                <option value="eo">eo - Esperanto - Esperanto</option>
+                <option value="eu">eu - Basque - Euskara</option>
+                <option value="sk">sk - Slovak - Slovenčina</option>
+                <option value="da">da - Danish - Dansk</option>
+                <option value="bg">bg - Bulgarian - Български</option>
+                <option value="lt">lt - Lithuanian - Lietuvių</option>
+                <option value="he">he - Hebrew - עברית</option>
+                <option value="hr">hr - Croatian - Hrvatski</option>
+                <option value="hy">hy - Armenian - Հայերեն</option>
+                <option value="sl">sl - Slovenian - Slovenščina</option>
+                <option value="et">et - Estonian - Eesti</option>
+                <option value="uz">uz - Uzbek - O‘zbek</option>
+                <option value="gl">gl - Galician - Galego</option>
+                <option value="vo">vo - Volapük - Volapük</option>
+                <option value="nn">nn - Norwegian (Nynorsk) - Nynorsk</option>
+                <option value="hi">hi - Hindi - हिन्दी</option>
+                <option value="el">el - Greek - Ελληνικά</option>
+                <option value="la">la - Latin - Latina</option>
+                <option value="az">az - Azerbaijani - Azərbaycanca</option>
+                <option value="th">th - Thai - ไทย</option>
+                <option value="ka">ka - Georgian - ქართული</option>
+                <option value="oc">oc - Occitan - Occitan</option>
+                <option value="mk">mk - Macedonian - Македонски</option>
+                <option value="be">be - Belarusian - Беларуская</option>
+                <option value="ce">ce - Chechen - Нохчийн</option>
+                <option value="mg">mg - Malagasy - Malagasy</option>
+                <option value="new">new - Newar / Nepal Bhasa - नेपाल भाषा</option>
+                <option value="ta">ta - Tamil - தமிழ்</option>
+                <option value="tt">tt - Tatar - Tatarça / Татарча</option>
+                <option value="ur">ur - Urdu - اردو</option>
+                <option value="pms">pms - Piedmontese - Piemontèis</option>
+                <option value="tl">tl - Tagalog - Tagalog</option>
+                <option value="cy">cy - Welsh - Cymraeg</option>
+                <option value="te">te - Telugu - తెలుగు</option>
+                <option value="lv">lv - Latvian - Latviešu</option>
+                <option value="bs">bs - Bosnian - Bosanski</option>
+                <option value="e-x-old ">Belarold  - usian (Taraškievica) - Беларуская (тарашкевіца)</option>
+                <option value="ht">ht - Haitian - Krèyol ayisyen</option>
+                <option value="br">br - Breton - Brezhoneg</option>
+                <option value="sq">sq - Albanian - Shqip</option>
+                <option value="jv">jv - Javanese - Basa Jawa</option>
+                <option value="lb">lb - Luxembourgish - Lëtzebuergesch</option>
+                <option value="mr">mr - Marathi - मराठी</option>
+                <option value="is">is - Icelandic - Íslenska</option>
+                <option value="ml">ml - Malayalam - മലയാളം</option>
+                <option value="h-yue ">Canyue  - tonese - 粵語</option>
+                <option value="af">af - Afrikaans - Afrikaans</option>
+                <option value="bn">bn - Bengali - বাংলা</option>
+                <option value="ba">ba - Bashkir - Башҡорт</option>
+                <option value="pnb">pnb - Western Panjabi - شاہ مکھی پنجابی (Shāhmukhī Pañjābī)</option>
+                <option value="ga">ga - Irish - Gaeilge</option>
+                <option value="my">my - Burmese - မြန်မာဘာသာ</option>
+                <option value="lmo">lmo - Lombard - Lumbaart</option>
+                <option value="fy">fy - West Frisian - Frysk</option>
+                <option value="yo">yo - Yoruba - Yorùbá</option>
+                <option value="tg">tg - Tajik - Тоҷикӣ</option>
+                <option value="an">an - Aragonese - Aragonés</option>
+                <option value="cv">cv - Chuvash - Чăваш</option>
+                <option value="sco">sco - Scots - Scots</option>
+                <option value="sw">sw - Swahili - Kiswahili</option>
+                <option value="ky">ky - Kirghiz - Кыргызча</option>
+                <option value="ne">ne - Nepali - नेपाली</option>
+                <option value="io">io - Ido - Ido</option>
+                <option value="gu">gu - Gujarati - ગુજરાતી</option>
+                <option value="bpy">bpy - Bishnupriya Manipuri - ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী</option>
+                <option value="scn">scn - Sicilian - Sicilianu</option>
+                <option value="nds">nds - Low Saxon - Plattdüütsch</option>
+                <option value="ku">ku - Kurdish - Kurdî / كوردی</option>
+                <option value="ast">ast - Asturian - Asturianu</option>
+                <option value="qu">qu - Quechua - Runa Simi</option>
+                <option value="gd">gd - Scottish Gaelic - Gàidhlig</option>
+                <option value="als">als - Alemannic - Alemannisch</option>
+                <option value="su">su - Sundanese - Basa Sunda</option>
+                <option value="kn">kn - Kannada - ಕನ್ನಡ</option>
+                <option value="pa">pa - Punjabi - ਪੰਜਾਬੀ</option>
+                <option value="am">am - Amharic - አማርኛ</option>
+                <option value="ckb">ckb - Sorani - Soranî / کوردی</option>
+                <option value="ia">ia - Interlingua - Interlingua</option>
+                <option value="nap">nap - Neapolitan - Nnapulitano</option>
+                <option value="bug">bug - Buginese - Basa Ugi</option>
+                <option value="mn">mn - Mongolian - Монгол</option>
+                <option value="at-smg ">Samosmg  - gitian - Žemaitėška</option>
+                <option value="wa">wa - Walloon - Walon</option>
+                <option value="arz">arz - Egyptian Arabic - مصرى (Maṣri)</option>
+                <option value="ap-bms ">Banybms  - umasan - Basa Banyumasan</option>
+                <option value="h-min-nan ">Min Nannan  -  - Bân-lâm-gú</option>
+                <option value="si">si - Sinhalese - සිංහල</option>
+                <option value="mzn">mzn - Mazandarani - مَزِروني</option>
+                <option value="yi">yi - Yiddish - ייִדיש</option>
+                <option value="fo">fo - Faroese - Føroyskt</option>
+                <option value="sah">sah - Sakha - Саха тыла (Saxa Tyla)</option>
+                <option value="sa">sa - Sanskrit - संस्कृतम्</option>
+                <option value="bar">bar - Bavarian - Boarisch</option>
+                <option value="vec">vec - Venetian - Vèneto</option>
+                <option value="nah">nah - Nahuatl - Nāhuatl</option>
+                <option value="os">os - Ossetian - Иронау</option>
+                <option value="oa-tara ">Taratara  - ntino - Tarandíne</option>
+                <option value="hsb">hsb - Upper Sorbian - Hornjoserbsce</option>
+                <option value="li">li - Limburgish - Limburgs</option>
+                <option value="or">or - Oriya - ଓଡ଼ିଆ</option>
+                <option value="pam">pam - Kapampangan - Kapampangan</option>
+                <option value="se">se - Northern Sami - Sámegiella</option>
+                <option value="ilo">ilo - Ilokano - Ilokano</option>
+                <option value="mrj">mrj - Hill Mari - Кырык Мары (Kyryk Mary)</option>
+                <option value="mi">mi - Maori - Māori</option>
+                <option value="co">co - Corsican - Corsu</option>
+                <option value="mhr">mhr - Meadow Mari - Олык Марий (Olyk Marij)</option>
+                <option value="hif">hif - Fiji Hindi - Fiji Hindi</option>
+                <option value="bcl">bcl - Central Bicolano - Bikol</option>
+                <option value="gan">gan - Gan - 贛語</option>
+                <option value="frr">frr - North Frisian - Nordfriisk</option>
+                <option value="bh">bh - Bihari - भोजपुरी</option>
+                <option value="bo">bo - Tibetan - བོད་སྐད</option>
+                <option value="rue">rue - Rusyn - Русиньскый</option>
+                <option value="glk">glk - Gilaki - گیلکی</option>
+                <option value="ds-nl ">Dutcnl  - h Low Saxon - Nedersaksisch</option>
+                <option value="iu-vro ">Võrovro  -  - Võro</option>
+                <option value="vls">vls - West Flemish - West-Vlams</option>
+                <option value="ps">ps - Pashto - پښتو</option>
+                <option value="tk">tk - Turkmen - تركمن / Туркмен</option>
+                <option value="pag">pag - Pangasinan - Pangasinan</option>
+                <option value="diq">diq - Zazaki - Zazaki</option>
+                <option value="xmf">xmf - Mingrelian - მარგალური (Margaluri)</option>
+                <option value="gv">gv - Manx - Gaelg</option>
+                <option value="sc">sc - Sardinian - Sardu</option>
+                <option value="km">km - Khmer - ភាសាខ្មែរ</option>
+                <option value="hak">hak - Hakka - Hak-kâ-fa / 客家話</option>
+                <option value="csb">csb - Kashubian - Kaszëbsczi</option>
+                <option value="kv">kv - Komi - Коми</option>
+                <option value="zea">zea - Zeelandic - Zeêuws</option>
+                <option value="crh">crh - Crimean Tatar - Qırımtatarca</option>
+                <option value="vep">vep - Vepsian - Vepsän</option>
+                <option value="h-classical ">Claclassical  - ssical Chinese - 古文 / 文言文</option>
+                <option value="ay">ay - Aymara - Aymar</option>
+                <option value="so">so - Somali - Soomaali</option>
+                <option value="dv">dv - Divehi - ދިވެހިބަސް</option>
+                <option value="udm">udm - Udmurt - Удмурт кыл</option>
+                <option value="kw">kw - Cornish - Kernewek/Karnuack</option>
+                <option value="nrm">nrm - Norman - Nouormand/Normaund</option>
+                <option value="rm">rm - Romansh - Rumantsch</option>
+                <option value="wuu">wuu - Wu - 吴语</option>
+                <option value="eml">eml - Emilian-Romagnol - Emiliàn e rumagnòl</option>
+                <option value="koi">koi - Komi-Permyak - Перем Коми (Perem Komi)</option>
+                <option value="ug">ug - Uyghur - ئۇيغۇر تىلى</option>
+                <option value="stq">stq - Saterland Frisian - Seeltersk</option>
+                <option value="lad">lad - Ladino - Dzhudezmo</option>
+                <option value="lij">lij - Ligurian - Líguru</option>
+                <option value="fur">fur - Friulian - Furlan</option>
+                <option value="szl">szl - Silesian - Ślůnski</option>
+                <option value="mt">mt - Maltese - Malti</option>
+                <option value="as">as - Assamese - অসমীয়া</option>
+                <option value="bk-zam ">Zambzam  - oanga Chavacano - Chavacano de Zamboanga</option>
+                <option value="gn">gn - Guarani - Avañe'ẽ</option>
+                <option value="pcd">pcd - Picard - Picard</option>
+                <option value="pi">pi - Pali - पाऴि</option>
+                <option value="gag">gag - Gagauz - Gagauz</option>
+                <option value="ksh">ksh - Ripuarian - Ripoarisch</option>
+                <option value="ie">ie - Interlingue - Interlingue</option>
+                <option value="ang">ang - Anglo-Saxon - Englisc</option>
+                <option value="dsb">dsb - Lower Sorbian - Dolnoserbski</option>
+                <option value="ace">ace - Acehnese - Bahsa Acèh</option>
+                <option value="ext">ext - Extremaduran - Estremeñu</option>
+                <option value="nv">nv - Navajo - Diné bizaad</option>
+                <option value="frp">frp - Franco-Provençal/Arpitan - Arpitan</option>
+                <option value="kab">kab - Kabyle - Taqbaylit</option>
+                <option value="sn">sn - Shona - chiShona</option>
+                <option value="mwl">mwl - Mirandese - Mirandés</option>
+                <option value="lez">lez - Lezgian - Лезги чІал (Lezgi č’al)</option>
+                <option value="ln">ln - Lingala - Lingala</option>
+                <option value="cdo">cdo - Min Dong - Mìng-dĕ̤ng-ngṳ̄</option>
+                <option value="pfl">pfl - Palatinate German - Pälzisch</option>
+                <option value="krc">krc - Karachay-Balkar - Къарачай-Малкъар (Qarachay-Malqar)</option>
+                <option value="haw">haw - Hawaiian - Hawai`i</option>
+                <option value="pdc">pdc - Pennsylvania German - Deitsch</option>
+                <option value="xal">xal - Kalmyk - Хальмг</option>
+                <option value="myv">myv - Erzya - Эрзянь (Erzjanj Kelj)</option>
+                <option value="rw">rw - Kinyarwanda - Ikinyarwanda</option>
+                <option value="nov">nov - Novial - Novial</option>
+                <option value="kaa">kaa - Karakalpak - Qaraqalpaqsha</option>
+                <option value="to">to - Tongan - faka Tonga</option>
+                <option value="kl">kl - Greenlandic - Kalaallisut</option>
+                <option value="arc">arc - Aramaic - ܐܪܡܝܐ</option>
+                <option value="bjn">bjn - Banjar - Bahasa Banjar</option>
+                <option value="lo">lo - Lao - ລາວ</option>
+                <option value="kbd">kbd - Kabardian Circassian - Адыгэбзэ (Adighabze)</option>
+                <option value="ha">ha - Hausa - هَوُسَ</option>
+                <option value="pap">pap - Papiamentu - Papiamentu</option>
+                <option value="av">av - Avar - Авар</option>
+                <option value="ty">ty - Tahitian - Reo Mā`ohi</option>
+                <option value="tpi">tpi - Tok Pisin - Tok Pisin</option>
+                <option value="bxr">bxr - Buryat (Russia) - Буряад</option>
+                <option value="na">na - Nauruan - dorerin Naoero</option>
+                <option value="mdf">mdf - Moksha - Мокшень (Mokshanj Kälj)</option>
+                <option value="lbe">lbe - Lak - Лакку</option>
+                <option value="jbo">jbo - Lojban - Lojban</option>
+                <option value="wo">wo - Wolof - Wolof</option>
+                <option value="oa-rup ">Aromrup  - anian - Armãneashce</option>
+                <option value="srn">srn - Sranan - Sranantongo</option>
+                <option value="ig">ig - Igbo - Igbo</option>
+                <option value="tet">tet - Tetum - Tetun</option>
+                <option value="nso">nso - Northern Sotho - Sepedi</option>
+                <option value="tyv">tyv - Tuvan - Тыва</option>
+                <option value="kg">kg - Kongo - KiKongo</option>
+                <option value="ab">ab - Abkhazian - Аҧсуа</option>
+                <option value="sd">sd - Sindhi - سنڌي، سندھی ، सिन्ध</option>
+                <option value="ltg">ltg - Latgalian - Latgaļu</option>
+                <option value="zu">zu - Zulu - isiZulu</option>
+                <option value="za">za - Zhuang - Cuengh</option>
+                <option value="om">om - Oromo - Oromoo</option>
+                <option value="tw">tw - Twi - Twi</option>
+                <option value="chy">chy - Cheyenne - Tsetsêhestâhese</option>
+                <option value="mai">mai - Maithili - मैथिली</option>
+                <option value="rmy">rmy - Romani - romani - रोमानी</option>
+                <option value="cu">cu - Old Church Slavonic - Словѣньскъ</option>
+                <option value="chr">chr - Cherokee - ᏣᎳᎩ</option>
+                <option value="tn">tn - Tswana - Setswana</option>
+                <option value="got">got - Gothic - 𐌲𐌿𐍄𐌹𐍃𐌺</option>
+                <option value="bi">bi - Bislama - Bislama</option>
+                <option value="pih">pih - Norfolk - Norfuk</option>
+                <option value="rn">rn - Kirundi - Kirundi</option>
+                <option value="sm">sm - Samoan - Gagana Samoa</option>
+                <option value="bm">bm - Bambara - Bamanankan</option>
+                <option value="ss">ss - Swati - SiSwati</option>
+                <option value="mo">mo - Moldovan - Молдовеняскэ</option>
+                <option value="iu">iu - Inuktitut - ᐃᓄᒃᑎᑐᑦ</option>
+                <option value="xh">xh - Xhosa - isiXhosa</option>
+                <option value="ki">ki - Kikuyu - Gĩkũyũ</option>
+                <option value="pnt">pnt - Pontic - Ποντιακά</option>
+                <option value="lg">lg - Luganda - Luganda</option>
+                <option value="ts">ts - Tsonga - Xitsonga</option>
+                <option value="ee">ee - Ewe - Eʋegbe</option>
+                <option value="ak">ak - Akan - Akana</option>
+                <option value="ti">ti - Tigrinya - ትግርኛ</option>
+                <option value="fj">fj - Fijian - Na Vosa Vakaviti</option>
+                <option value="ks">ks - Kashmiri - कश्मीरी / كشميري</option>
+                <option value="sg">sg - Sango - Sängö</option>
+                <option value="ff">ff - Fula - Fulfulde</option>
+                <option value="ny">ny - Chichewa - Chichewa</option>
+                <option value="ve">ve - Venda - Tshivenda</option>
+                <option value="st">st - Sesotho - Sesotho</option>
+                <option value="ch">ch - Chamorro - Chamoru</option>
+                <option value="cr">cr - Cree - Nehiyaw</option>
+                <option value="dz">dz - Dzongkha - ཇོང་ཁ</option>
+                <option value="ik">ik - Inupiak - Iñupiak</option>
+                <option value="tum">tum - Tumbuka - chiTumbuka</option>
+                <option value="ng">ng - Ndonga - Oshiwambo</option>
+                <option value="ii">ii - Sichuan Yi - ꆇꉙ</option>
+                <option value="cho">cho - Choctaw - Choctaw</option>
+                <option value="mh">mh - Marshallese - Ebon</option>
+                <option value="aa">aa - Afar - Afar</option>
+                <option value="kj">kj - Kuanyama - Kuanyama</option>
+                <option value="ho">ho - Hiri Motu - Hiri Motu</option>
+                <option value="mus">mus - Muscogee - Muskogee</option>
+                <option value="kr">kr - Kanuri - Kanuri</option>
+                <option value="hz">hz - Herero - Otsiherero</option>
+            </select>
+            </td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td><label>Second language hotkey</label></td>
+        <td>
+            <select name="secondLanguageHotkey" id="secondLanguageHotkey">
+                <option value="ctrl">Ctrl</option>
+                <option value="alt">Alt</option>
+                <option value="shift">Shift</option>
+                <option value="cmd">Cmd (macOS)</option>
+                <option value="disable">Disable hotkey</option>
+             </select>
+        </td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td class="bottomLeft"><label>Wordnik dictionaries (English)</label></td>
+        <td class="bottomRight">
+            <select name="wordnikDictionary" id="wordnikDictionary">
+                <option value="all">All Wordnik dictionaries</option>
+                <option value="ahd">The American Heritage Dictionary, 4th Edition</option>
+                <option value="wiktionary">Wiktionary</option>
+                <option value="gcide">GNU Collaborative International Dictionary of English</option>
+                <option value="century">The Century Dictionary and Cyclopedia</option>
+                <option value="wordnet">WordNet 3.0 by Princeton University</option>
+                <option value="disable">Disable Wordnik dictionaries</option>
+             </select>
+        </td>
+        </tr> 
+
+        <tr><td colspan="2" class="blockSeparator"></td></tr> 
+
+        <tr><td colspan="2" class="blockTitle">OPEN STREET MAP</td></tr>
+
+        <tr class="oneRow onoff"><td class="topLeft"><label>OpenStreetMap on / off</label></td>
+        <td class="disableUserSelect topRight"><input type="checkbox" id="isOpenStreetMapEnabled"/></td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td><label>Initial zoom level in the Example bubble</label></td>
+        <td class="disableUserSelect">
+            <div class="sliderValue"></div>
+            <div class="sliderWrapper">
+                <input name="openStreetMapInExampleBubbleZoomLevel" type="text" id="openStreetMapInExampleBubbleZoomLevel" class="powerange">
+            </div>
+        </td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td><label>Initial zoom level on OpenStreetMap.org</label></td>
+        <td class="disableUserSelect">
+            <div class="sliderValue"></div>
+            <div class="sliderWrapper">
+                <input name="openStreetMapOpenInNewTabZoomLevel" type="text" id="openStreetMapOpenInNewTabZoomLevel" class="powerange">
+            </div>
+        </td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td><label>Open Street Map width</label></td>
+        <td>
+            <input name="openStreetMapWidth" type="text" id="openStreetMapWidth">
+        </td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td class="bottomLeft"><label>Open Street Map height</label></td>
+        <td class="bottomRight">
+            <input name="openStreetMapHeight" type="text" id="openStreetMapHeight">
+        </td>
+        </tr> 
+
+
+        <tr><td colspan="2" class="blockSeparator"></td></tr> 
+
+        <tr><td colspan="2" class="blockTitle">ADDITIONAL</td></tr>
+
+        <tr class="oneRow"><td class="topLeft"><label>External links search engine</label></td>
+        <td class="topRight">
+            <select name="searchEngine" id="searchEngine">
+                <option value="google">Google</option>
+                <option value="yahoo">Yahoo</option>
+                <option value="bing">Bing</option>
+                <option value="baidu">Baidu</option>
+                <option value="ask">Ask</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+                <option value="yandex">Yandex</option>
+                <option value="reddit">Reddit</option>
+                <option value="twitter">Twitter</option>
+             </select>
+        </td>
+        </tr>
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow onoff"><td><label>Wordnik random example</label></td>
+        <td class="disableUserSelect"><input type="checkbox" id="isRandomExampleEnabled"/></td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow onoff"><td class="bottomLeft"><label>Search Wikipedia only</label></td>
+        <td class="bottomRight">
+            <input type="checkbox" id="wikipediaOnly"/>
+        </td>
+        </tr>
+
+        <tr><td colspan="2" class="blockSeparator"></td></tr> 
+
+        <tr><td colspan="2" class="blockTitle">NETWORK</td></tr>
+
+        <tr class="oneRow onoff"><td class="topLeft"><label>Ignore errors</label></td>
+        <td class="topRight"><input type="checkbox" id="axonIgnoreErrors"/></td>
+        </tr> 
+
+        <tr><td colspan="2" class="separator"></td></tr> 
+
+        <tr class="oneRow"><td class="bottomLeft"><label>Maximum wait time</label></td>
+        <td class="bottomRight">
+            <input name="axonMaximumWaitTime" type="text" id="axonMaximumWaitTime"><input id="axonMaximumWaitTimeLabel" type="text" value="milliseconds" readonly>
+        </td>
+        </tr> 
+
+
+    </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
