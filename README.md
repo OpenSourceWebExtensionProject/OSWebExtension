@@ -16,3 +16,15 @@ Self create:
 
 #End 
 ----------------------------------------------------------------------------------------------------------
+
+#01/10/2018 - Ju Kheng
+
+Firefox Extension refer:
+1. Axon-multilingual-dictionary
+
+Have to do:
+1. Content > Popover > popover.html (Nicer layout)
+2. Change extension icon and name
+
+#End
+---------------------------------------------------------------------------------------------------------
