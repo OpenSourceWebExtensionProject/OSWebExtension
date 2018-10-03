@@ -42,18 +42,39 @@ $(document).ready(function() {
 			$('.task').focus();
 			
 		} else {
-			var task = $(this).find('.task').val();
-			browser.storage.local.get('tasks', function(obj){
-				var tasks = obj.tasks? obj.tasks : new Array();
-				tasks.push(task);
-				browser.storage.local.set({'tasks': tasks}, function(){
-					var taskItemDiv = "<li class='task-item-div'><input class='task-checkbox' type='checkbox'><span class='task-item'>" + task + "</span></li>";
-					$('.todo-list').append(taskItemDiv);
-					$(".task").val('');
-					$(".task").focus();
-					browser.browserAction.setBadgeText({text: tasks.length.toString()});
-				});
-			});
+			var selectedChoice = document.getElementById("choiceDropDown").selectedIndex;
+
+			//if textbox is not empty
+			if ((textbox.value).length != 0){
+				// when dropdownlist value is NOTE
+				if (selectedChoice == "1") {
+					noteItem += "<li class='task-item-div'><span style='border: 5px;'>" + textbox.value + "</span>" + 
+								//delete button with the icon
+								"<button name='deleteBtn" + noteList.length + "'  style='font-size:8px; float:right; background-color:Transparent; border:0px;'>Delete</button>" +
+								//edit button with the icon
+								"<button name='editBtn" + noteList.length +"'  style='font-size:8px; float:right; background-color:Transparent; border:0px;'>Edit</button></li>";
+
+					document.getElementById('note-items').innerHTML = noteItem
+
+					noteList.push(textbox.value);
+					localStorage.setItem('noteItem', JSON.stringify(noteList));
+					addBtnListeners();
+				}
+				else {
+					var task = $(this).find('.task').val();
+					browser.storage.local.get('tasks', function(obj){
+						var tasks = obj.tasks? obj.tasks : new Array();
+						tasks.push(task);
+						browser.storage.local.set({'tasks': tasks}, function(){
+							var taskItemDiv = "<li class='task-item-div'><input class='task-checkbox' type='checkbox'><span class='task-item'>" + task + "</span></li>";
+							$('.todo-list').append(taskItemDiv);
+							$(".task").val('');
+							$(".task").focus();
+							browser.browserAction.setBadgeText({text: tasks.length.toString()});
+						});
+					});
+				}
+			}
 		}
 	});
 	

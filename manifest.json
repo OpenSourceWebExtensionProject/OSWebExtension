@@ -27,11 +27,12 @@
 		"default_popup": "ToDoList.html",
 		"default_title": "To-Do-List"
 	},
- 
 
   "background": {
-    "scripts": ["extra.js"]
-  },  
+    "scripts": [
+      "extra.js"
+    ]
+  },
 
   "content_scripts": [
     {
