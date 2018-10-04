@@ -1,97 +1,4 @@
 
-//word of the day
-var root = "https://www.dictionary.com";
-var today = new Date();
-today.setHours(0, 0, 0, 0);   
-
-document.addEventListener("click", function(e) {
-    
-    if (!e.target.classList.contains("button")) {
-        return;
-    }
-
-    var chosenPage = "";
-    
-    if (e.target.classList.contains("link-button")) {
-        chosenPage = "https://addons.mozilla.org/tr/firefox/addon/word-of-the-day-dictionary-com/";
-    }
-    else {
-        var title = document.getElementById('s_title').innerText;
-        chosenPage = root + "/browse/" + title;
-    }
-    
-    browser.tabs.create({
-        url: chosenPage
-    });
-  
-    window.close();
-});
-
-function populate(title, type, meaning) {
-    
-    var span1 = document.createElement("span");
-    span1.id = "s_title";
-    span1.textContent = title;
-    document.getElementById('title').textContent = "";
-    document.getElementById('title').appendChild(span1);
-    
-    var span2 = document.createElement("span");
-    span2.id = "type";
-    span2.textContent = "(" + type + ")";
-    document.getElementById('meaning').appendChild(span2);
-    
-    var span3 = document.createElement("span");
-    span3.textContent = meaning;
-    document.getElementById('meaning').appendChild(span3);
-}
-
-function GM_xmlhttpRequest(orders) {
-
-    var oReq = new XMLHttpRequest();
-    
-    oReq.onreadystatechange = function() {
-        if (oReq.readyState === 4) {
-            if (oReq.status === 200) {
-                var str = oReq.responseText;
-                
-                var myRe = /{"word":"(.*)","short_definition":"(.*)","pos":"(.*)","pronunciation":"(.*)","header_notes":(.*),"footer_notes":(.*),"audio":(.*),(.*)/;
-                
-                var arr = myRe.exec(str);
-                
-                populate(arr[1], arr[3], arr[2]);
-                
-                localStorage.setItem('date', today);
-                localStorage.setItem('title', arr[1]);
-                localStorage.setItem('type', arr[3]);
-                localStorage.setItem('meaning', arr[2]);
-                
-            } else {
-                document.getElementById('title').innerHTML = "Failed";
-            }
-        }
-    };
-    
-    oReq.open("GET", orders, true);
-    oReq.send(null);
-}
-
-window.addEventListener("load", function(e) {
-
-    var date = localStorage.getItem('date');
-    
-    if (date == today) {
-        var title = localStorage.getItem('title');
-        var type = localStorage.getItem('type');
-        var meaning = localStorage.getItem('meaning');
-        populate(title, type, meaning);
-        return;
-    }
-    
-    GM_xmlhttpRequest(root);
-    
-});
-
-
 //below is dictionary
 
 var lang1 = null;
@@ -103,7 +10,7 @@ var setSettingTimeout = null;
 
 function resetSearch() {
     hideSearchResults();
-    document.getElementById("search").focus();
+    //document.getElementById("search").focus();
 }
 
 function setSetting(key, value) 
@@ -161,8 +68,8 @@ function hideSearchResults()
 {
     executeOn('.searchResult', function() { this.style.display='none'; });
     executeOn('.searchResultHeader', function() { this.style.display='none'; });
-    document.getElementById("resultBox").classList.remove("showResults");
-    document.getElementById("resultBox").classList.add("noResults");
+    //document.getElementById("resultBox").classList.remove("showResults");
+    //document.getElementById("resultBox").classList.add("noResults");
 }
 
 function disableLanguageSwitch() {
@@ -290,30 +197,30 @@ function animateWidth(selector, from, to, callback)
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-    mainMenuWidth = document.body.clientWidth;
+    //mainMenuWidth = document.body.clientWidth;
     lang1 = document.getElementById("lang1");
     lang2 = document.getElementById("lang2");
     resetSearch();
 
-    document.getElementById("back").addEventListener('click', function() 
-    {
-        // reload main/second language changes
-        setLanguageButtons();
+    // document.getElementById("back").addEventListener('click', function() 
+    // {
+    //     // reload main/second language changes
+    //     setLanguageButtons();
 
-        animateWidth(".animateWidth", 725, mainMenuWidth, function() {
-            document.getElementById("settingsMenu").style.display = "none";
-            document.getElementById("mainMenu").style.display = "block";
-            resetSearch();
-        });
-    });
+    //     animateWidth(".animateWidth", 725, mainMenuWidth, function() {
+    //         document.getElementById("settingsMenu").style.display = "none";
+    //         document.getElementById("mainMenu").style.display = "block";
+    //         resetSearch();
+    //     });
+    // });
 
-    document.getElementById("back").addEventListener('mouseover', function() {
-        this.style.color="#315b7d";
-    });
+    // document.getElementById("back").addEventListener('mouseover', function() {
+    //     this.style.color="#315b7d";
+    // });
 
-    document.getElementById("back").addEventListener('mouseout', function() {
-        this.style.color="#4682B4";
-    });
+    // document.getElementById("back").addEventListener('mouseout', function() {
+    //     this.style.color="#4682B4";
+    // });
 
 
     executeOn('.clickToOpenSettings', function() {
