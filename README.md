@@ -26,6 +26,9 @@ Have to do:
 1. Content > Popover > popover.html (Nicer layout)
 2. Change extension icon and name
 
+#04/10/2018 - Shu Xuan 
+Updated codes to Word Of The Day function
+
 #04/10/2018 - Freda
 Have done: 
 1. Update manifest.json file 
@@ -39,6 +42,9 @@ Have done:
 
 Undone task: 
 1. Rename Folder Name?
+
+#05/10/2018 - Shu Xuan 
+Changed Secondary Language Code to Chinese
 
 #End
 ---------------------------------------------------------------------------------------------------------
