@@ -1,17 +1,19 @@
 {
     "manifest_version": 2,
-    "name":             "Axon - multilingual dictionary",
-    "description":      "Find definitions in all Wordnik dictionaries, Wikipedia articles and Wiktionary entries in every available language.",
-    "author":           "Ivo van Kamp",
-    "short_name":       "Axon",
-    "version":          "2.6.23",
-    // "options_page":     "Content/Settings/settings.html",
+    "name":"One Word/Day with Dictionary ",
+    
+    "description":"An extension with the purpose of improving user grammar by providing new word everyday. Besides, other feature like dictionaries searching is included in this extension. The dictionary will be based on Wikipedia articles, Wikipedia dictionaries and Wikitionary entries.",
+    
+    "version":"1",
+   
     "applications": {
         "gecko": {
-            "id": "dude@users.noreply.github.com",
-            "strict_min_version": "54.0a1"
+            "id": "team@online"
+            
         }
     },
+    
+    
     "background": {
         "scripts": [
             "Content/Config.js", 
@@ -23,6 +25,7 @@
             "Content/Lib/WikiFilter.js",
             "Event.js"
         ],
+        
         "persistent": false
     },
   
@@ -57,14 +60,14 @@
     ],
   
     "icons": {
-       "128": "Images/Wordnik-logo-128.png",
-       "16": "Images/Wordnik-logo-16.png",
-       "32": "Images/Wordnik-logo-32.png",
-       "48": "Images/Wordnik-logo-48.png"
+      
+       "16": "Images/dictionary.jpg",
+       "32": "Images/dictionary.jpg"
+       
     },
 
     "browser_action": {
-      "default_icon": "Images/Wordnik-logo-64.png",
+      "default_icon": "Images/dictionary.jpg",
       "default_popup": "Content/Popover/popover.html",
       "default_title": "Axon"
     }
