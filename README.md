@@ -26,5 +26,19 @@ Have to do:
 1. Content > Popover > popover.html (Nicer layout)
 2. Change extension icon and name
 
+#04/10/2018 - Freda
+Have done: 
+1. Update manifest.json file 
+1a. Update Version 
+1b. Update Description 
+1c. Update application id
+1d. Update Extension Name
+
+2. icon changed
+3. Beautify the  layout 
+
+Undone task: 
+1. Rename Folder Name?
+
 #End
 ---------------------------------------------------------------------------------------------------------
