@@ -65,7 +65,7 @@ var Config = (function() {
         "activateAxonWhenI"                     : "mouseup",
         "activateAxonWhileHoldingDown"          : "disable",
         "mainLanguageCode"                      : "en",
-        "secondLanguageCode"                    : "en",
+        "secondLanguageCode"                    : "zh",
         "popoverLanguageCode"                   : "en",
         "secondLanguageHotkey"                  : "disable",
         "wordnikDictionary"                     : "all",
