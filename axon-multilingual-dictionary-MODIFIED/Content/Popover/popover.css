@@ -20,7 +20,7 @@
 
         body {
             background-color: #F0EFF4;
-            overflow-y:hidden;
+            overflow-y:scroll;
         }
 
         div#resultBox.showResults {
