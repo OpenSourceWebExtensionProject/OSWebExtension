@@ -1,19 +1,20 @@
+var taskList = [];
 
 var init = function() {
-	
-	browser.storage.local.get('tasks', function(obj){
-		
-		var items = obj.tasks? obj.tasks : new Array();
-		if (items.length > 0) {
-			
-			todoList = "";
-			for (var i = 0; i < items.length; i++){
-				todoList += "<li class='task-item-div'><input class='task-checkbox' type='checkbox' tabindex='-1'><span class='task-item'>" + items[i] + "</span></li>";
+	if (localStorage.getItem("tasks") != null){
+		taskList = JSON.parse(localStorage.getItem("tasks"));
+
+		if (taskList.length > 0){
+			var taskItem = "";
+			for (var y = 0; y < taskList.length; y++){
+				taskItem += "<li class='task-item-div'><input class='task-checkbox' type='checkbox' tabindex='-1'><span class='task-item'>" + taskList[y] + "</span></li>";
+				document.getElementById('todo-items').innerHTML = taskItem;
 			}
-			$('.todo-list').html(todoList);
-			browser.browserAction.setBadgeText({text: items.length.toString()});	
 		}
-	});
+	}
+	else
+		taskList = [];
+
 	browser.browserAction.setBadgeBackgroundColor({ color: "#d43f3a"});
 	
 };
@@ -22,60 +23,41 @@ $(document).ready(function() {
 	
 	init();
 
-	$('.todo-form').submit(function(e) {
-		e.preventDefault();
-		if ((!$.trim($(this).find('.task').val()))
-			|| ($.trim($(this).find('.task').val())=="مهمة جديدة")
-			|| ($.trim($(this).find('.task').val())=="Neue aufgabe...")
-			|| ($.trim($(this).find('.task').val())=="New task...")
-			|| ($.trim($(this).find('.task').val())=="Nueva tarea...")
-			|| ($.trim($(this).find('.task').val())=="Nouvelle tâche...")
-			|| ($.trim($(this).find('.task').val())=="Nuovo compito...")
-			|| ($.trim($(this).find('.task').val())=="新しい仕事...")
-			|| ($.trim($(this).find('.task').val())=="새 작업...")
-			|| ($.trim($(this).find('.task').val())=="Nieuwe taak...")
-			|| ($.trim($(this).find('.task').val())=="Nowe zadanie...")
-			|| ($.trim($(this).find('.task').val())=="Nova tarefa...")
-			|| ($.trim($(this).find('.task').val())=="Новое задание...")
-			|| ($.trim($(this).find('.task').val())=="Yeni görev...")){
+	$('#addBtn').click(function() {
 
-			$('.task').focus();
-			
-		} else {
-			var selectedChoice = document.getElementById("choiceDropDown").selectedIndex;
+		var selectedChoice = document.getElementById("choiceDropDown").selectedIndex;
 
-			//if textbox is not empty
-			if ((textbox.value).length != 0){
-				// when dropdownlist value is NOTE
-				if (selectedChoice == "1") {
-					noteItem += "<li class='task-item-div'><span style='border: 5px;'>" + textbox.value + "</span>" + 
-								//delete button with the icon
-								"<button name='deleteBtn" + noteList.length + "'  style='font-size:8px; float:right; background-color:Transparent; border:0px;'>Delete</button>" +
-								//edit button with the icon
-								"<button name='editBtn" + noteList.length +"'  style='font-size:8px; float:right; background-color:Transparent; border:0px;'>Edit</button></li>";
+		//if textbox is not empty
+		if ((textbox.value).length != 0){
+			// when dropdownlist value is NOTE
+			if (selectedChoice == "1") {
+				noteItem += "<li class='task-item-div'><span class='note-Item' style='border: 5px;'>" + textbox.value + "</span>" + 
+							//delete button with the icon
+							"<button name='deleteBtn" + noteList.length + "'  style='font-size:8px; float:right; background-color:Transparent; border:0px;'>Delete</button></li>";
+							// //edit button with the icon
+							// "<button name='editBtn" + noteList.length +"'  style='font-size:8px; float:right; background-color:Transparent; border:0px;'>Edit</button></li>";
 
-					document.getElementById('note-items').innerHTML = noteItem
+				document.getElementById('note-items').innerHTML = noteItem;
 
-					noteList.push(textbox.value);
-					localStorage.setItem('noteItem', JSON.stringify(noteList));
-					addBtnListeners();
-				}
-				else {
-					var task = $(this).find('.task').val();
-					browser.storage.local.get('tasks', function(obj){
-						var tasks = obj.tasks? obj.tasks : new Array();
-						tasks.push(task);
-						browser.storage.local.set({'tasks': tasks}, function(){
-							var taskItemDiv = "<li class='task-item-div'><input class='task-checkbox' type='checkbox'><span class='task-item'>" + task + "</span></li>";
-							$('.todo-list').append(taskItemDiv);
-							$(".task").val('');
-							$(".task").focus();
-							browser.browserAction.setBadgeText({text: tasks.length.toString()});
-						});
-					});
-				}
+				noteList.push(textbox.value);
+				localStorage.setItem('noteItem', JSON.stringify(noteList));
+				addBtnListeners();
+			}
+			//when dropdownlist value is todo list
+			else {
+
+				var task = textbox.value;
+				
+				taskList.push(task);
+				localStorage.setItem('tasks', JSON.stringify(taskList));
+
+				var taskItemDiv = "<li class='task-item-div'><input class='task-checkbox' type='checkbox'><span class='task-item'>" + task + "</span></li>";
+				document.getElementById('todo-items').innerHTML = taskItemDiv;
+				$(".task").val('');
+				$(".task").focus();
 			}
 		}
+		
 	});
 	
 	var text = browser.i18n.getMessage("addTask");
@@ -92,37 +74,60 @@ $(document).ready(function() {
 		if($(this).val() == "") $(this).val(text);
 	});
 
+	//when checkbox is checked
 	$(document).on('click', '.task-checkbox', function(){
     	if ($(this).is(':checked')) {
     		var el = $(this);
     		var task = el.next('.task-item').html();
-    		browser.storage.local.get('tasks', function(obj){
-    			var tasks = obj.tasks;
-				var index = tasks.indexOf(task);
-				if (index != -1) {
-					tasks.splice(index, 1);
-				}
-				browser.storage.local.set({'tasks': tasks}, function(){
-					el.next('.task-item').css('color', '#404040');
-					el.next('.task-item').css('text-decoration', 'line-through');
-    				el.parent().fadeOut(2000);
-    				browser.browserAction.setBadgeText({text: tasks.length.toString()});
-				});
-			});
+
+			taskList = JSON.parse(localStorage.getItem("tasks"));
+			var index = taskList.indexOf(task);
+			if (index != -1) {
+				taskList.splice(index, 1);
+			}
+
+			localStorage.setItem('tasks', JSON.stringify(taskList));
+
+			el.next('.task-item').css('color', '#404040');
+			el.next('.task-item').css('text-decoration', 'line-through');
+			el.parent().fadeOut(2000);
     	}
     });
 
+	//double click to edit note items
+	$(document).on('click', '.note-Item', function(){
+		var oldTask = $(this).html();
+		$(this).editable(function(value, settings) {
+
+			noteList = JSON.parse(localStorage.getItem("noteItem"));
+			var index = noteList.indexOf(oldTask);
+			if (index != -1) {
+				noteList[index] = value;
+			}
+
+			localStorage.setItem('noteItem', JSON.stringify(noteList));
+
+		    return(value);
+		}, {
+			onblur : "submit",
+			width:"192px",
+            height:"15px",
+		});
+	});
+
+	//double click to edit to do list items
 	$(document).on('click', '.task-item', function(){
 		var oldTask = $(this).html();
 		$(this).editable(function(value, settings) {
-			browser.storage.local.get('tasks', function(obj){
-				var tasks = obj.tasks;
-				var index = tasks.indexOf(oldTask);
-				if (index != -1) {
-					tasks[index] = value;
-				}
-				browser.storage.local.set({'tasks': tasks});
-			});
+
+			taskList = JSON.parse(localStorage.getItem("tasks"));
+			var index = taskList.indexOf(oldTask);
+			if (index != -1) {
+				taskList[index] = value;
+			}
+
+			localStorage.setItem('tasks', JSON.stringify(taskList));
+
 		    return(value);
 		}, {
 			onblur : "submit",

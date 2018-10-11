@@ -28,12 +28,6 @@
 		"default_title": "To-Do-List"
 	},
 
-  "background": {
-    "scripts": [
-      "extra.js"
-    ]
-  },
-
   "content_scripts": [
     {
       "matches": ["*://*/*"]
