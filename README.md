@@ -5,6 +5,9 @@ This repository consist of three web extension design for Firefox
 Refer to CSS file from Codepen:
 https://codepen.io/franklynroth/pen/ZYeaBd
 
+#11/10/2018 - Ju Kheng
+Fixed bugs, extension should work as expected.
+
 Firefox Extension refer: 
 1. minimalist-to-do-list
 2. todolistpro-pro-to-do-list
