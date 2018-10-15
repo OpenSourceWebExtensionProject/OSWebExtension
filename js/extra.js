@@ -2,10 +2,8 @@
 //initialise variables
 var noteList = [];
 var noteItem = "";
-var addButton = document.getElementById("addBtn");
-var textbox = document.getElementById("task");
 
-//functions that will run on page load
+//function that will run on page load
 initialiseValues();
 
 // from the ul with id note-items, select the li inside
@@ -19,7 +17,6 @@ function addBtnListeners(){
 	for (var i = 0; i < deleteButtons.length; i++){
 		deleteButtons[i].addEventListener("click", function(){
 			index = this.name.split('deleteBtn').pop();
-			// alert(index);
 			// remove index item from array
 			noteList.splice(index, 1);
 			// update browser storage
