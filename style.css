@@ -43,6 +43,47 @@ input, .task-submit{
   background-position: -12px 0;
 }
 
+.info-icon {
+	height: 25px;
+	width: 25px;
+}
+
+a.hiddenInfo {
+	position:relative;
+	z-index:20;
+	text-decoration:none;
+}
+
+a.hiddenInfo:hover {
+	z-index:30;
+}
+
+a.hiddenInfo span.showHiddenInfo { 
+	display:none;
+}
+
+a.hiddenInfo:hover span.showHiddenInfo { 
+	display:block;
+	position:absolute;
+	font-size:16px;
+	line-height:25px;
+	left:25px;
+	width:250px;
+	padding:10px;
+	border: 1px solid #666;
+	background-color: #c0cedd;
+	color: #000;
+	text-align:justify;
+}
+
+span.showMoreHiddenInfo {
+	text-transform:none;
+	font-size:14px;
+	font-weight:normal;
+	color: #000;
+	line-height: 18px;
+}
+
 /* Heading */
 h3,
 label[for='new-task'] {
@@ -54,6 +95,7 @@ label[for='new-task'] {
   margin: 0;
   text-transform: uppercase;
 }
+
 input[type="text"] {
   margin: 0;
   font-size: 18px;
@@ -66,6 +108,8 @@ input[type="text"] {
   font-family: Lato, sans-serif;
   color: #888;
 }
+
+
 input[type="text"]:focus {
   color: #333;
 }
@@ -75,6 +119,7 @@ label[for='new-task'] {
   display: block;
   margin: 0 0 20px;
 }
+
 input#new-task {
   float: left;
   width: 318px;
