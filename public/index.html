@@ -3,17 +3,29 @@
 <head>
     <meta charset="utf-8">
 	<title>New Tab</title>
+	<!-- cat css -->
 	<link rel="stylesheet" type="text/css" href="styles/index.css">
+
+	<!-- clock css -->
+	<link href="clock-assets/css/style.css" type="text/css" rel="stylesheet" />
+
+	<!-- cat JavaScript -->
 	<script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
- 	<!-- <script type="text/javascript" src="scripts/names.js"></script> -->
+ 	<script type="text/javascript" src="scripts/names.js"></script>
 	<script type="text/javascript" src="scripts/chooser.js"></script>
 	<script type="text/javascript" src="scripts/storage.js"></script>
 	<script type="text/javascript" src="scripts/svg-inject.js"></script>
+
+	<!-- Clock JavaScript -->
+	<script type="text/javascript" src="clock-assets/js/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="clock-assets/js/moment.min.js"></script>
+	<script type="text/javascript" src="clock-assets/js/clock-script.js"></script>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="">
 
-	<div class="allGoodies" style="display:none;">
+	<div class="allGoodies" style="display:none; zoom:70%">
 		<div data-type="hat" data-goodies="hat-1"><img src="images/hat-1-sm.svg" /></div>
 		<div data-type="hat" data-goodies="hat-2"><img src="images/hat-2-sm.svg" /></div>
 		<div data-type="hat" data-goodies="hat-3"><img src="images/hat-3-sm.svg" /></div>
@@ -157,11 +169,14 @@
 			<path d="M199.4,180.6h4.6c2.3,0,3.6,2.2,2.3,3.8l-1.8,2.2l-2.8,3.2c-1.1,1.3-3.4,1.3-4.5,0l-2.8-3.3l-1.8-2.1c-1.4-1.6,0-3.8,2.3-3.8H199.4z"/>
 		</symbol>
 	</svg>
+
 	<div class="outer-wrapper">
 		<div class="center-wrapper">
+         
 			<img src="images/frame.png" />
 			<img class="abs shadow" src="images/shadow.svg" />
-			<div class="abs name"></div>
+<!--			<div class="abs name"></div>-->
+           
 			<div class="abs cat">
 				<div class="abs fill body purrs">
 					<svg viewBox="0 0 480 480"><use xlink:href="#body-1" /></svg>
@@ -229,9 +244,39 @@
 				<img data-type="toy" data-active-goodies="toy-18" src="images/toy-18.svg" />
 				<img data-type="toy" data-active-goodies="toy-19" src="images/toy-19.svg" />
 			</div>
-			<div class="abs ck"></div>
+            <div>
+                <h1 style="margin:auto 40px;">Have a great day!</h1>
+            </div>
+<!--
+			<div class="abs ck">
+            
+            
+            </div>
+-->
+
+
+	<div id="clock" class="light">
+			<div class="display">
+				<div class="weekdays"></div>
+				<div class="ampm"></div>
+				<div class="alarm"></div>
+				<div class="digits"></div>
+			</div>
+        
 		</div>
+            <div class="button-holder">
+			<a class="Clockbutton" id="switchButton">Switch Clock Theme</a>
+		</div>
+		
+            
+
+		</div>
+
+
+	
+
 	</div>
+
 <!-- 
 	<div class="collection">
 		<div class="bag abs">
