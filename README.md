@@ -67,10 +67,23 @@ no additional changes has done for this folder.
 js and css file in this folder has its original comments by the original developer.
 html code has changes with comments on its content. 
 
-"Popover.js" has changes on it. The Menu content is commented out.
+i. "Popover.js" has changes on it. The Menu content is commented out.
 changes at: line 205 till 223 'document.getElementById("back").addEventListener('click', function()...'
 
 changes at: line 294 till 300 'var axonDisabledElement = document.getElementById("axonDisabled");...'
+
+ii. "Popover.html" has changes on it. Some of the functions and features has been comment out
+changes at: line 26 till 35 ' <!-- <script type="text/javascript"> ...'
+
+changes at: line 53 till 59 '<p class="text">Examples:</p>...'
+
+changes at: line 71 till 77 '<p class="text">Examples:</p>... '
+
+changes at: line 83 till 88 '<tr><td class="bordersTop separator relative" style>...'
+
+changes at: line 116 '<div id="annotation-more-wiktionary"... '
+
+changes at: line 127 '<div id="annotation-more-wiktionary">... '
 
 
 4. Images folder: 
@@ -84,10 +97,6 @@ No changes occur for this file.
 
 7. manifest.json: 
 Changes occur as mention above Enhancement #2
-
-
-
- 
 
 -----------------------------------------------------------------------------------------------------------
 
