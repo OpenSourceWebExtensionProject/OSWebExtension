@@ -50,9 +50,10 @@ In Progress of adding comments as guidelines in the extension files.
 
 Pending: Documentation for second extension: Dictionary and Word of the Day.
 
+-----------------------------------------------------------------------------------------------------------
 #19/10/2018 - Freda
 
-<<Conclusion>>
+Conclusion
 
 1. ExtLib folder: 
 js and css extension files in this folder has its original comments by the original developer.
