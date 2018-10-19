@@ -54,15 +54,15 @@ Pending: Documentation for second extension: Dictionary and Word of the Day.
 
 <<Conclusion>>
 
-ExtLib folder: 
+1. ExtLib folder: 
 js and css extension files in this folder has its original comments by the original developer.
 no additional changes has done for this folder.
 
-Lib folder: 
+2. Lib folder: 
 js,html and css extension files in this folder has its original comments by the original developer.
 no additional changes has done for this folder.
 
-Popover folder: 
+3. Popover folder: 
 js and css file in this folder has its original comments by the original developer.
 html code has changes with comments on its content. 
 
@@ -72,19 +72,17 @@ changes at: line 205 till 223 'document.getElementById("back").addEventListener(
 changes at: line 294 till 300 'var axonDisabledElement = document.getElementById("axonDisabled");...'
 
 
-Images folder: 
+4. Images folder: 
 'dictionary.jpg' as our representative icon
 
-META-INF folder: 
+5. META-INF folder: 
 No changes for these files 
 
-Event.js file: 
+6. Event.js file: 
 No changes occur for this file.
 
-manifest.json: 
+7. manifest.json: 
 Changes occur as mention above Enhancement #2
-
-
 
 
 
