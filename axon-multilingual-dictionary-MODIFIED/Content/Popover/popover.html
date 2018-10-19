@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="../ExtLib/powerange.css" />
         <script src="../ExtLib/switchery.js"></script>
         <script src="../ExtLib/powerange.js"></script>
-
         <script src="../Config.js"></script>
         <script src="../Lib/DomHelper.js"></script>
         <script src="../Lib/ParserFilter.js"></script>
@@ -15,7 +14,6 @@
         <script src="../Lib/StringHelper.js"></script>
         <script src="../Lib/Request.js"></script>
         <script src="../Lib/Template/Template.js"></script>
-
         <script src="popover.js"></script>
         <link rel="stylesheet" href="popover.css" />
 
@@ -24,7 +22,8 @@
          <link rel="stylesheet" href="popup.css" type="text/css" media="screen" charset="utf-8">
          <script type='text/javascript' src="jquery-wordDaily.js"></script>
          <script type='text/javascript' src="popup-wordDaily.js"></script>
-         <!-- <script type="text/javascript">
+         
+        <!-- <script type="text/javascript">
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', 'UA-31502678-1']);
           _gaq.push(['_trackPageview']);
@@ -39,6 +38,7 @@
 
 <body>
 
+<!--This is to display the new word for everyday-->
 <div id="wordOfDay">
     <center>WORD OF THE DAY</center>
      <hr />
@@ -48,6 +48,8 @@
        <p class="text">Definition: </p>
        <div id="definition"></div>
        <hr />
+           
+           
 <!--        <p class="text">Examples:</p>
        <div id="examples"></div> -->
 <!--
@@ -57,7 +59,7 @@
 -->
        </div>
 
-
+<!--This is to display the Dictionary features-->
 <div id="mainMenu">
     
     <div id="wordOfDay">
@@ -76,6 +78,7 @@
        </div>
     </div>
 
+ <!-- This is to allow user to enter the word to search in either chinese or english   -->
     <table class="popoverTable">
 <!--     <tr>
         <td class="bordersTop separator relative" style="padding:8px 10px"><span style="position:relative;top:2px;">Axon on / off</span><input id="axonDisabled" type="checkbox" class="js-switch"/></td>
@@ -83,6 +86,8 @@
     <tr>
          <td class="separator clickToOpenSettings relative" style="height:26px"><span>Settings</span><div class="greaterThan">&gt;</div></td>
     </tr> -->
+ 
+ <!--Allow user to switch between English/Chinese  -->
     <tr>
         <td class="bordersBottom separator relative userSelectNone">
             <input id="search" type="text" placeholder="Type a word or phrase to search" style="padding:0;height:26px;">
@@ -96,20 +101,23 @@
     </table>
     </div>
     
+  <!--Allow the result to be shown -->
     <div id="resultBox" class="overflowYScroll userSelectNone">
 
         <table class="popoverTable">
-
+            
+   <!-- Display WORDNIK result-->
             <tr class="searchResultHeader wordnik"><td class="blockTitle searchResultHeader wordnik">WORDNIK</td></tr>
 
             <tr class="searchResult wordnik">
                 <td class="bordersTop bordersBottom relative">
                     <div id="resultWordnik"></div>
                     <div id="annotation-attribution-wordnik"><a target="_blank"></a></div>
-<!--                    <div id="annotation-more-wordnik"><a target="_blank">More</a></div>-->
+ <!--                    <div id="annotation-more-wordnik"><a target="_blank">More</a></div>-->
                 </td>
             </tr>
-
+            
+   <!-- Display WIKTIONARY result-->
             <tr class="searchResultHeader wiktionary"><td class="blockTitle searchResultHeader wiktionary">WIKTIONARY</td></tr>
 
             <tr class="searchResult wiktionary">
@@ -119,7 +127,8 @@
 <!--                    <div id="annotation-more-wiktionary"><a target="_blank">more</a></div>-->
                 </td>
             </tr>
-
+            
+   <!---Display WIKIPEDIA result-->
             <tr class="searchResultHeader wikipedia"><td class="blockTitle searchResultHeader wikipedia">WIKIPEDIA</td></tr>
 
             <tr class="searchResult wikipedia">
@@ -131,8 +140,7 @@
             </tr>
 
         </table>
-        
-                    
+                 
     </div>
        
 </body>
