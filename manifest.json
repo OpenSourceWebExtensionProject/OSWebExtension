@@ -17,5 +17,12 @@
 	  "name": "Leslie Zacharkow",
 	  "url": "http://www.lesliez.com"
 	},
-	"homepage_url": "http://tabbycats.club"
+	"homepage_url": "http://tabbycats.club",
+	"content_security_policy": "script-src 'self' https://api.openweathermap.org https://use.typekit.net; object-src 'self'",
+    "permissions": [
+        "*://use.typekit.net/*",
+        "webRequest",
+        "webRequestBlocking",
+        "geolocation"
+    ]
 }
