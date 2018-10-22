@@ -8,6 +8,9 @@
 
 	<!-- clock css -->
 	<link href="clock-assets/css/style.css" type="text/css" rel="stylesheet" />
+	
+	<!-- Weather css -->
+    <link rel="stylesheet" type="text/css" href="weather-assets/css/style.css"> 
 
 	<!-- cat JavaScript -->
 	<script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
@@ -20,6 +23,17 @@
 	<script type="text/javascript" src="clock-assets/js/jquery-3.1.1.js"></script>
 	<script type="text/javascript" src="clock-assets/js/moment.min.js"></script>
 	<script type="text/javascript" src="clock-assets/js/clock-script.js"></script>
+	
+	<!-- Weather JavaScript -->
+	<script type="text/javascript" src="weather-assets/js/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="weather-assets/js/vendor/greensock/TweenLite.js"></script>
+	<script type="text/javascript" src="weather-assets/js/vendor/greensock/plugins/CSSPlugin.js"></script>
+	<script type="text/javascript" src="weather-assets/js/background.js"></script>
+	<script type="text/javascript" src="weather-assets/js/rds1chu.js"></script>
+	<script type="text/javascript" src="weather-assets/js/main.js"></script>
+
+    <!-- modernizr -->
+    <script src="weather-assets/js/vendor/modernizr/modernizr-2.6.2.min.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -276,6 +290,23 @@
 	
 
 	</div>
+	
+	<div class="dimmer"></div>
+<div class="forecast"></div>
+<div class="units">
+    <div class="c on">c&deg;</div>
+    <div class="spcr">|</div>
+    <div class="f">f&deg;</div>
+</div>
+<div class="splash"></div>
+<div class="error"></div>
+<div id="weather"></div>
+
+<div class="intro">
+    <p>where are you?</p>
+    <form>
+        <input type="text" />
+    </form>
 
 <!-- 
 	<div class="collection">
