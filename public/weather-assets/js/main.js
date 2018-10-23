@@ -95,21 +95,12 @@ $(document).ready(function () {
 
     function initUnitToggle(){
 
-		/*$units.children().on('click', function() {
-   			toggleUnits();
-   		});*/
-        //$units.children().click(toggleUnits);
-		
-		document.getElementById("Celcius").addEventListener("click", function(){
-			toggleUnits();
-		});
-		
-		document.getElementById("Fahrenheit").addEventListener("click", function(){
-			toggleUnits();
-		});
+        $units.children().click(toggleUnits);
 
         var $c = $('#c',$units),
             $f = $('#f',$units);
+			
+		localStorage.setItem("bleak_units", "C");
 
         var saved_unit = localStorage.getItem("bleak_units") ? localStorage.getItem("bleak_units") : "C";
         if (saved_unit == 'F') {
