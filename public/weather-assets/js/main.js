@@ -95,10 +95,21 @@ $(document).ready(function () {
 
     function initUnitToggle(){
 
-        $units.children().click(toggleUnits);
+		/*$units.children().on('click', function() {
+   			toggleUnits();
+   		});*/
+        //$units.children().click(toggleUnits);
+		
+		document.getElementById("Celcius").addEventListener("click", function(){
+			toggleUnits();
+		});
+		
+		document.getElementById("Fahrenheit").addEventListener("click", function(){
+			toggleUnits();
+		});
 
-        var $c = $('.c',$units),
-            $f = $('.f',$units);
+        var $c = $('#c',$units),
+            $f = $('#f',$units);
 
         var saved_unit = localStorage.getItem("bleak_units") ? localStorage.getItem("bleak_units") : "C";
         if (saved_unit == 'F') {
@@ -109,21 +120,21 @@ $(document).ready(function () {
 
         function toggleUnits(){
             var cel = $c.hasClass('on');
-            $c.toggleClass('on', !cel)
-            $f.toggleClass('on', cel)
+            $c.toggleClass('on', !cel);
+            $f.toggleClass('on', cel);
 
             var unit = cel ? "F" : "C";
 
             localStorage.setItem("bleak_units", unit);
             toggleWeather();
-            showForecast();
+            //showForecast();
         }
 
     }
 
     function animate(str, icon) {
 
-        $("svg").hide();
+        //$("svg").hide();
         setSVGsize();
 
         $weather.show();
@@ -165,10 +176,10 @@ $(document).ready(function () {
         TweenLite.to($weather, 1, {'color': txtclr});
 
         //forecast
-        $('h3', $weather).css({'cursor': 'pointer'}).click(toggleForecast)
+        //$('h3', $weather).css({'cursor': 'pointer'}).click(toggleForecast)
 
         //where
-        $('.place', $weather).css({'cursor': 'pointer'}).click(askForLocation)
+        //$('.place', $weather).css({'cursor': 'pointer'}).click(askForLocation)
     }
 
     /**********************
@@ -317,10 +328,10 @@ $(document).ready(function () {
 
 //        console.log(w.updated)
         //var u = String(w.updated).slice(16,21);
-        var h = new Date(w.updated).getHours() > 0 ? new Date(w.updated).getHours() : "00",
-            m = new Date(w.updated).getMinutes() > 9 ? new Date(w.updated).getMinutes() : "0" + String(new Date(w.updated).getMinutes());
+        var h = new Date().getHours() > 0 ? new Date().getHours() : "00",
+            m = new Date().getMinutes() > 9 ? new Date().getMinutes() : "0" + String(new Date().getMinutes());
 
-        var _html = '<p>today is <span class="teal">' + w.day + '</span></p>'
+        var _html = '<p>today is <span class="blue">' + w.day + '</span></p>'
         _html += '<h3>' + showTemp(w.temp) + '&deg;' + '</h3>';
 //        _html += '<p>'+w.high+'&deg; / '+w.low+'&deg;</p>';
         _html += '<p>' + w.currently + '</p>';
