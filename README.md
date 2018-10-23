@@ -46,7 +46,21 @@ Weather functionality. Pass on to Shu Xuan.
 -----------------------------------------------------------------------------------------------------------------
 Third sub-task: 
 
+#19/10/2018-23/10/2018
+Done: 
+Added weather functionality.
 
+1. Added weather-assets/css
+2. Added weather-assets/js
+3. Added weather-assets/data
+4. Removed javascript code that force hides other .svg
+5. Removed clickables on location text.
+6. Removed option to switch temperature between Celsius and Fahrenheit
+7. Fixed initial temperature unit as Celsius.
+
+Extension Source:
+Bleak - https://chrome.google.com/webstore/detail/bleak/fpjagaljndnekelimchojdakbnfalejm?hl=en
+Purpose: Simple and clear way to view the current weather condition. Includes casual text quotes that changes on refresh to add more interest to the extension.
 
 #End 
 ----------------------------------------------------------------------------------------------------------
