@@ -1,0 +1,47 @@
+{
+  "manifest_version": 2,
+  "name": "To-Do-List",
+  "version": "1.0",
+
+  "description": "This extension allow user to use it as a normal to-do-list or make it into notes.",
+
+  "icons": {
+    "48": "icons/to_do_list.png",
+    "96": "icons/to_do_list.png"
+  },
+    
+"applications": {
+		"gecko": {
+	    	"id": "team@online"
+		}
+	},
+    
+"browser_action":{
+    
+		"browser_style": false,
+		"default_icon": {
+			"19" : "icons/to_do_list.png",
+			"38" : "icons/to_do_list.png"
+		},
+    
+		"default_popup": "ToDoList.html",
+		"default_title": "To-Do-List"
+	},
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"]
+
+    }
+  ],
+    
+ "icons": {
+    "48": "icons/to_do_list.png",
+    "96": "icons/to_do_list.png"
+  },
+    
+ "permissions": [
+		"storage", "tabs","*://*/*","activeTab","clipboardWrite"
+	]
+
+}
